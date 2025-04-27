@@ -1,38 +1,106 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Quán Ăn Ngon Việt Nam</title>
-    <link rel="stylesheet" href="css/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vietnamese Food Shops</title>
+  <link rel="stylesheet" href="../CSS/main.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="#" class="logo">Ẩm Thực Việt</a>
-            <ul class="nav-links">
-                <li><a href="#">Trang Chủ</a></li>
-                <li><a href="#">Giới Thiệu</a></li>
-                <li><a href="#">Liên Hệ</a></li>
-                <li><a href="login.html">Đăng Nhập</a></li>
-                <li><a href="register.html">Đăng Ký</a></li>
-            </ul>
+  <nav class="navbar">
+    <div class="container">
+      <a href="#" class="logo" onclick="showSection('home')">VietFood</a>
+      <div class="nav-links">
+        <a href="#" onclick="showSection('food-shops')">Food Shops</a>
+        <div id="auth-buttons">
+          <a href="#" onclick="showSection('login')">Login</a>
+          <a href="#" onclick="showSection('register')" class="register-btn">Register</a>
         </div>
-    </nav>
-
-    <main class="main-content">
-        <div class="container">
-            <h1>Danh Sách Quán Ăn Ngon</h1>
-            <div id="restaurant-list" class="restaurant-list">
-            </div>
+        <div id="user-info" style="display: none;">
+          <span id="user-email"></span>
+          <a href="#" onclick="logout()" class="logout-btn">Logout</a>
         </div>
-    </main>
+      </div>
+    </div>
+  </nav>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Ẩm Thực Việt. Bản quyền được bảo lưu.</p>
+  <main>
+    <section id="home" class="section active">
+      <div class="hero">
+        <h1>Discover the Best <span>Vietnamese Food</span></h1>
+        <p>Explore authentic Vietnamese cuisine from the finest local food shops across Vietnam</p>
+        <button onclick="showSection('food-shops')" class="cta-button">Explore Food Shops</button>
+      </div>
+      <div class="featured-dishes">
+        <div class="dish-card">
+          <img src="https://images.unsplash.com/photo-1697652974652-fe755a11cc93" alt="Bowl of Pho">
+          <h3>Authentic Pho</h3>
+          <p>Traditional Vietnamese noodle soup</p>
         </div>
-    </footer>
+        <div class="dish-card">
+          <img src="https://images.unsplash.com/photo-1675718343674-9cb5926e398e" alt="Banh Mi">
+          <h3>Crispy Banh Mi</h3>
+          <p>Vietnamese-style sandwiches</p>
+        </div>
+        <div class="dish-card">
+          <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a" alt="Spring Rolls">
+          <h3>Fresh Spring Rolls</h3>
+          <p>Healthy and delicious appetizers</p>
+        </div>
+      </div>
+    </section>
 
-    <script src="js/main.js"></script>
+    <section id="login" class="section">
+      <div class="auth-container">
+        <div class="auth-card">
+          <h2>Welcome Back</h2>
+          <p>Login to your account</p>
+          <form id="login-form" onsubmit="handleLogin(event)">
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="register" class="section">
+      <div class="auth-container">
+        <div class="auth-card">
+          <h2>Create Account</h2>
+          <p>Sign up to explore Vietnamese cuisine</p>
+          <form id="register-form" onsubmit="handleRegister(event)">
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Register</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="food-shops" class="section">
+      <div class="container">
+        <h2>Popular Food Shops</h2>
+        <div class="shop-grid" id="shop-grid">
+        </div>
+      </div>
+    </section>
+  </main>
+<footer class="footer">
+    <div class="container"></div>
+        <p>Contact us: <a href="tel:000000000">000000000</a></p>
+        <p>Connect with us:
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a> |
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a> |
+            <a href="https://www.discord.com/" target="_blank" rel="noopener noreferrer">Discord</a>
+        </p>
+    </div>  
+</footer>
+  <div id="toast" class="toast"></div>
+  
+  <script src="../JS/main.js"></script>
+  <script>
+    // Additional JavaScript code can be added here
+  </script>
 </body>
 </html>
