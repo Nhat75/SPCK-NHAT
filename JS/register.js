@@ -42,7 +42,15 @@ document.getElementById("registerForm").addEventListener("submit", function (e) 
 
     // If all validations pass
     if (isValid) {
-        alert("Registration successful!");
-        // Add logic to handle successful registration (e.g., send data to server)
+        localStorage.setItem('currentUser', email);
+        window.location.href = 'home.html';
     }
 });
+
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast ${type}`;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+}

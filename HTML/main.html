@@ -5,51 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vietnamese Food Shops</title>
   <link rel="stylesheet" href="../CSS/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
   <nav class="navbar">
     <div class="container">
-      <a href="#" class="logo" onclick="showSection('home')">VietFood</a>
+      <a href="#" class="logo" onclick="showSection('home')">
+        <i class="fas fa-utensils"></i> VietFood
+      </a>
       <div class="nav-links">
-        <a href="#" onclick="showSection('food-shops')">Food Shops</a>
+        <a href="#" onclick="showSection('home')"><i class="fas fa-home"></i> Home</a>
+        <a href="#" onclick="showSection('food-shops')"><i class="fas fa-store"></i> Food Shops</a>
         <div id="auth-buttons">
-          <a href="#" onclick="showSection('login')">Login</a>
-          <a href="#" onclick="showSection('register')" class="register-btn">Register</a>
+          <a href="#" onclick="showSection('login')"><i class="fas fa-sign-in-alt"></i> Login</a>
+          <a href="#" onclick="showSection('register')" class="register-btn"><i class="fas fa-user-plus"></i> Register</a>
         </div>
         <div id="user-info" style="display: none;">
           <span id="user-email"></span>
-          <a href="#" onclick="logout()" class="logout-btn">Logout</a>
+          <a href="#" onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
       </div>
     </div>
   </nav>
 
   <main>
+    <!-- Home Section: Hero + Popular Dishes -->
     <section id="home" class="section active">
       <div class="hero">
         <h1>Discover the Best <span>Vietnamese Food</span></h1>
         <p>Explore authentic Vietnamese cuisine from the finest local food shops across Vietnam</p>
-        <button onclick="showSection('food-shops')" class="cta-button">Explore Food Shops</button>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <i class="fas fa-store"></i>
+            <span id="total-shops">0</span>
+            <p>Food Shops</p>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-star"></i>
+            <span id="avg-rating">0</span>
+            <p>Average Rating</p>
+          </div>
+          <div class="stat-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span id="total-cities">0</span>
+            <p>Cities</p>
+          </div>
+        </div>
       </div>
       <div class="featured-dishes">
-        <div class="dish-card">
-          <img src="https://images.unsplash.com/photo-1697652974652-fe755a11cc93" alt="Bowl of Pho">
-          <h3>Authentic Pho</h3>
-          <p>Traditional Vietnamese noodle soup</p>
-        </div>
-        <div class="dish-card">
-          <img src="https://images.unsplash.com/photo-1675718343674-9cb5926e398e" alt="Banh Mi">
-          <h3>Crispy Banh Mi</h3>
-          <p>Vietnamese-style sandwiches</p>
-        </div>
-        <div class="dish-card">
-          <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a" alt="Spring Rolls">
-          <h3>Fresh Spring Rolls</h3>
-          <p>Healthy and delicious appetizers</p>
+        <h2>Popular Dishes</h2>
+        <div class="dishes-grid" id="dishes-grid">
+          <!-- Dishes will be populated by JavaScript -->
         </div>
       </div>
     </section>
 
+    <!-- Login Section -->
     <section id="login" class="section">
       <div class="auth-container">
         <div class="auth-card">
@@ -64,6 +75,7 @@
       </div>
     </section>
 
+    <!-- Register Section -->
     <section id="register" class="section">
       <div class="auth-container">
         <div class="auth-card">
@@ -78,15 +90,81 @@
       </div>
     </section>
 
+    <!-- Food Shops Section (Popular Food Shops) -->
     <section id="food-shops" class="section">
       <div class="container">
         <h2>Popular Food Shops</h2>
+        <div class="filters">
+          <select id="city-filter" onchange="filterShops()">
+            <option value="">All Cities</option>
+          </select>
+          <select id="cuisine-filter" onchange="filterShops()">
+            <option value="">All Cuisines</option>
+          </select>
+          <select id="price-filter" onchange="filterShops()">
+            <option value="">All Prices</option>
+            <option value="₫">Budget</option>
+            <option value="₫₫">Moderate</option>
+            <option value="₫₫₫">Luxury</option>
+          </select>
+        </div>
         <div class="shop-grid" id="shop-grid">
         </div>
       </div>
     </section>
+
+    <!-- Shop Detail Section -->
+    <section id="shop-detail" class="section">
+      <div class="container">
+        <button class="back-btn" onclick="showSection('food-shops')">
+          <i class="fas fa-arrow-left"></i> Back to Shops
+        </button>
+        <div id="shop-detail-content">
+          <div class="shop-info">
+            <h2 id="detail-name"></h2>
+            <div class="shop-meta">
+              <span id="detail-location"></span>
+              <span id="detail-cuisine"></span>
+              <span id="detail-price"></span>
+              <div class="rating">
+                <span id="detail-rating"></span>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <div class="shop-dishes">
+            <h3>Menu</h3>
+            <div id="shop-dishes-list" class="dishes-grid">
+              <!-- Dishes will be populated by JavaScript -->
+            </div>
+          </div>
+          <div class="reviews-section">
+            <h3>Reviews</h3>
+            <div id="reviews-list"></div>
+            <div class="add-review">
+              <h4>Add Your Review</h4>
+              <form id="review-form" onsubmit="submitReview(event)">
+                <textarea placeholder="Write your review..." required></textarea>
+                <div class="rating-input">
+                  <span>Rating:</span>
+                  <div class="stars">
+                    <i class="far fa-star" data-rating="1"></i>
+                    <i class="far fa-star" data-rating="2"></i>
+                    <i class="far fa-star" data-rating="3"></i>
+                    <i class="far fa-star" data-rating="4"></i>
+                    <i class="far fa-star" data-rating="5"></i>
+                  </div>
+                </div>
+                <button type="submit">Submit Review</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
-<footer class="footer">
+
+  <footer class="footer">
     <div class="container"></div>
         <p>Contact us: <a href="tel:000000000">000000000</a></p>
         <p>Connect with us:
@@ -97,10 +175,6 @@
     </div>  
 </footer>
   <div id="toast" class="toast"></div>
-  
   <script src="../JS/main.js"></script>
-  <script>
-    // Additional JavaScript code can be added here
-  </script>
 </body>
 </html>
