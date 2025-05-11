@@ -3,29 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant Booking</title>
-  <link rel="stylesheet" href="booking.css">
+  <title>Vietnam Restaurant Booking</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    async function fetchRestaurants() {
+      try {
+        const response = await fetch('https://example.com/api/restaurants');
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching restaurants:', error);
+        return [];
+      }
+    }
+
+    async function loadRestaurants() {
+      const restaurants = await fetchRestaurants();
+      const container = document.getElementById('restaurants');
+      container.innerHTML = '';
+
+      restaurants.forEach(restaurant => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-4 border rounded';
+        card.innerHTML = `
+          <h3 class="font-bold text-lg">${restaurant.name}</h3>
+          <p class="text-gray-700">${restaurant.description}</p>
+          <p class="text-gray-500">Location: ${restaurant.address}</p>
+          <p class="text-gray-500">Rating: ${restaurant.rating} ⭐</p>
+          <button class="bg-orange-500 text-white px-4 py-1 mt-2 rounded">Book Now</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadRestaurants);
+  </script>
 </head>
-<body>
-  <h1>Restaurant Booking</h1>
-  <form id="booking-form">
-    <label for="restaurant">Choose a restaurant:</label>
-    <select id="restaurant" name="restaurant">
-      <!-- Options will be dynamically loaded -->
-    </select>
+<body class="bg-gray-100">
 
-    <label for="name">Your Name:</label>
-    <input type="text" id="name" name="name" required>
+<header class="bg-white shadow p-4 mb-6">
+  <h1 class="text-center text-2xl font-bold text-orange-600">Vietnam Restaurant Booking</h1>
+</header>
 
-    <label for="date">Date:</label>
-    <input type="date" id="date" name="date" required>
+<main class="container mx-auto px-4">
+  <h2 class="text-xl font-semibold mb-4">Famous Vietnamese Restaurants</h2>
 
-    <label for="time">Time:</label>
-    <input type="time" id="time" name="time" required>
+  <div id="restaurants" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <p>Loading restaurants...</p>
+  </div>
+</main>
 
-    <button type="submit">Book Now</button>
-  </form>
-  <div id="confirmation"></div>
-  <script src="main.js"></script>
 </body>
 </html>

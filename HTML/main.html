@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vietnamese Food Shops</title>
+  <title>Nhà Hàng Việt Nam</title>
   <link rel="stylesheet" href="../CSS/main.css">
 </head>
 <body>
@@ -11,14 +11,14 @@
     <div class="container">
       <a href="#" class="logo" onclick="showSection('home')">VietFood</a>
       <div class="nav-links">
-        <a href="#" onclick="showSection('food-shops')">Food Shops</a>
+        <a href="#" onclick="showSection('food-shops')">Nhà Hàng</a>
         <div id="auth-buttons">
-          <a href="#" onclick="showSection('login')">Login</a>
-          <a href="#" onclick="showSection('register')" class="register-btn">Register</a>
+          <a href="#" onclick="showSection('login')" class="login-btn">Đăng Nhập</a>
+          <a href="#" onclick="showSection('register')" class="register-btn">Đăng Ký</a>
         </div>
         <div id="user-info" style="display: none;">
           <span id="user-email"></span>
-          <a href="#" onclick="logout()" class="logout-btn">Logout</a>
+          <a href="#" onclick="logout()" class="logout-btn">Đăng Xuất</a>
         </div>
       </div>
     </div>
@@ -26,26 +26,16 @@
 
   <main>
     <section id="home" class="section active">
-      <div class="hero">
-        <h1>Discover the Best <span>Vietnamese Food</span></h1>
-        <p>Explore authentic Vietnamese cuisine from the finest local food shops across Vietnam</p>
-        <button onclick="showSection('food-shops')" class="cta-button">Explore Food Shops</button>
-      </div>
       <div class="featured-dishes">
         <div class="dish-card">
-          <img src="https://images.unsplash.com/photo-1697652974652-fe755a11cc93" alt="Bowl of Pho">
-          <h3>Authentic Pho</h3>
-          <p>Traditional Vietnamese noodle soup</p>
+          <img src="https://images.unsplash.com/photo-1675718343674-9cb5926e398e" alt="Bánh Mì">
+          <h3>Bánh Mì Giòn</h3>
+          <p>Bánh mì kiểu Việt Nam</p>
         </div>
         <div class="dish-card">
-          <img src="https://images.unsplash.com/photo-1675718343674-9cb5926e398e" alt="Banh Mi">
-          <h3>Crispy Banh Mi</h3>
-          <p>Vietnamese-style sandwiches</p>
-        </div>
-        <div class="dish-card">
-          <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a" alt="Spring Rolls">
-          <h3>Fresh Spring Rolls</h3>
-          <p>Healthy and delicious appetizers</p>
+          <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a" alt="Gỏi Cuốn">
+          <h3>Gỏi Cuốn</h3>
+          <p>Món khai vị ngon và bổ dưỡng</p>
         </div>
       </div>
     </section>
@@ -53,12 +43,12 @@
     <section id="login" class="section">
       <div class="auth-container">
         <div class="auth-card">
-          <h2>Welcome Back</h2>
-          <p>Login to your account</p>
+          <h2>Chào Mừng Trở Lại</h2>
+          <p>Đăng nhập vào tài khoản của bạn</p>
           <form id="login-form" onsubmit="handleLogin(event)">
             <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Password" required>
-            <button type="submit">Login</button>
+            <input type="password" placeholder="Mật khẩu" required>
+            <button type="submit">Đăng Nhập</button>
           </form>
         </div>
       </div>
@@ -67,12 +57,13 @@
     <section id="register" class="section">
       <div class="auth-container">
         <div class="auth-card">
-          <h2>Create Account</h2>
-          <p>Sign up to explore Vietnamese cuisine</p>
+          <h2>Tạo Tài Khoản</h2>
+          <p>Đăng ký để khám phá ẩm thực Việt Nam</p>
           <form id="register-form" onsubmit="handleRegister(event)">
             <input type="email" placeholder="Email" required>
-            <input type="password" placeholder="Password" required>
-            <button type="submit">Register</button>
+            <input type="password" placeholder="Mật khẩu" required>
+            <input type="password" placeholder="Xác nhận mật khẩu" required>
+            <button type="submit">Đăng Ký</button>
           </form>
         </div>
       </div>
@@ -80,27 +71,113 @@
 
     <section id="food-shops" class="section">
       <div class="container">
-        <h2>Popular Food Shops</h2>
+        <h2>Nhà Hàng Nổi Tiếng</h2>
         <div class="shop-grid" id="shop-grid">
         </div>
       </div>
     </section>
+
+    <section id="restaurant-detail" class="section">
+      <div class="container">
+        <button class="back-btn" onclick="showSection('food-shops')">← Quay Lại Danh Sách</button>
+        <div class="restaurant-detail-content">
+          <div class="restaurant-info">
+            <img id="detail-image" src="" alt="">
+            <div class="restaurant-details">
+              <h2 id="detail-name"></h2>
+              <p id="detail-description"></p>
+              <div class="detail-info">
+                <p><strong>Vị trí:</strong> <span id="detail-location"></span></p>
+                <p><strong>Địa chỉ:</strong> <span id="detail-address"></span></p>
+                <p><strong>Món đặc sản:</strong> <span id="detail-specialty"></span></p>
+              </div>
+              <div class="restaurant-introduction">
+                <h3>Giới Thiệu Nhà Hàng</h3>
+                <p id="detail-introduction"></p>
+              </div>
+              <div class="restaurant-reviews">
+                <h3>Đánh Giá Từ Người Dùng</h3>
+                <div id="reviews-list"></div>
+                <form id="review-form" onsubmit="handleReview(event)" class="review-form">
+                  <div class="form-group">
+                    <label for="review-rating">Đánh giá của bạn:</label>
+                    <select id="review-rating" required>
+                      <option value="5">⭐⭐⭐⭐⭐ Rất tốt</option>
+                      <option value="4">⭐⭐⭐⭐ Tốt</option>
+                      <option value="3">⭐⭐⭐ Bình thường</option>
+                      <option value="2">⭐⭐ Không tốt</option>
+                      <option value="1">⭐ Tệ</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="review-comment">Nhận xét của bạn:</label>
+                    <textarea id="review-comment" rows="3" required placeholder="Chia sẻ trải nghiệm của bạn tại nhà hàng này..."></textarea>
+                  </div>
+                  <button type="submit" class="review-btn">Gửi Đánh Giá</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="booking-section">
+            <h3>Đặt Bàn</h3>
+            <form id="booking-form" onsubmit="handleBooking(event)">
+              <div class="form-group">
+                <label for="booking-name">Họ và tên</label>
+                <input type="text" id="booking-name" required>
+              </div>
+              <div class="form-group">
+                <label for="booking-email">Email</label>
+                <input type="email" id="booking-email" required>
+              </div>
+              <div class="form-group">
+                <label for="booking-phone">Số điện thoại</label>
+                <input type="tel" id="booking-phone" required>
+              </div>
+              <div class="form-group">
+                <label for="booking-date">Ngày</label>
+                <input type="date" id="booking-date" required>
+              </div>
+              <div class="form-group">
+                <label for="booking-time">Giờ</label>
+                <input type="time" id="booking-time" required>
+              </div>
+              <div class="form-group">
+                <label for="booking-guests">Số lượng khách</label>
+                <select id="booking-guests" required>
+                  <option value="1">1 người</option>
+                  <option value="2">2 người</option>
+                  <option value="3">3 người</option>
+                  <option value="4">4 người</option>
+                  <option value="5">5 người</option>
+                  <option value="6">6 người</option>
+                  <option value="7">7 người</option>
+                  <option value="8">8 người</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="booking-notes">Yêu cầu đặc biệt</label>
+                <textarea id="booking-notes" rows="3"></textarea>
+              </div>
+              <button type="submit" class="booking-btn">Đặt Ngay</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
-<footer class="footer">
-    <div class="container"></div>
-        <p>Contact us: <a href="tel:000000000">000000000</a></p>
-        <p>Connect with us:
+
+  <footer class="footer">
+    <div class="container">
+        <p>Liên hệ: <a href="tel:000000000">000000000</a></p>
+        <p>Kết nối với chúng tôi:
             <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Facebook</a> |
             <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram</a> |
             <a href="https://www.discord.com/" target="_blank" rel="noopener noreferrer">Discord</a>
         </p>
     </div>  
-</footer>
+  </footer>
   <div id="toast" class="toast"></div>
   
   <script src="../JS/main.js"></script>
-  <script>
-    // Additional JavaScript code can be added here
-  </script>
 </body>
 </html>
