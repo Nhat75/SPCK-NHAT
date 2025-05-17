@@ -1,0 +1,139 @@
+{
+  "foodStores": [
+    {
+      "restaurant_name": "Phở Bò Phú Gia",
+      "city": "TP.HCM",
+      "district": "Quận 3",
+      "cuisine": "Phở",
+      "rating": 4.5,
+      "price_range": "₫",
+      "source": "MICHELIN Guide",
+      "description": "Famous for its rich and flavorful beef pho, this restaurant has been serving authentic Vietnamese noodle soup for over 20 years.",
+      "address": "123 Nguyễn Văn Trỗi, Quận 3, TP.HCM",
+      "opening_hours": "6:00 - 22:00",
+      "phone": "028 1234 5678",
+      "dishes": [
+        {
+          "name": "Phở Bò Tái",
+          "price": "55.000đ",
+          "description": "Phở bò tái với nước dùng đậm đà, thịt bò tươi ngon",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        },
+        {
+          "name": "Phở Bò Viên",
+          "price": "50.000đ",
+          "description": "Phở với bò viên thơm ngon, nước dùng đậm đà",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        }
+      ]
+    },
+    {
+      "restaurant_name": "Bò Kho Gánh",
+      "city": "TP.HCM",
+      "district": "Quận 1",
+      "cuisine": "Bò kho",
+      "rating": 4.4,
+      "price_range": "₫",
+      "source": "MICHELIN Guide",
+      "description": "Specializing in traditional Vietnamese beef stew, this cozy restaurant offers a taste of authentic home cooking.",
+      "address": "45 Lê Lợi, Quận 1, TP.HCM",
+      "opening_hours": "7:00 - 21:00",
+      "phone": "028 2345 6789",
+      "dishes": [
+        {
+          "name": "Bò Kho",
+          "price": "65.000đ",
+          "description": "Bò kho thơm ngon với nước sốt đậm đà",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        },
+        {
+          "name": "Bánh Mì Bò Kho",
+          "price": "45.000đ",
+          "description": "Bánh mì kẹp bò kho thơm ngon",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        }
+      ]
+    },
+    {
+      "restaurant_name": "Bánh Xèo Tôm Nhảy Cô Ba",
+      "city": "Đà Nẵng",
+      "district": "Hải Châu",
+      "cuisine": "Bánh xèo",
+      "rating": 4.3,
+      "price_range": "₫",
+      "source": "MICHELIN Guide",
+      "description": "Known for its crispy Vietnamese crepes filled with fresh shrimp and vegetables, this restaurant is a must-visit in Da Nang.",
+      "address": "78 Trần Phú, Hải Châu, Đà Nẵng",
+      "opening_hours": "10:00 - 22:00",
+      "phone": "0236 3456 7890",
+      "dishes": [
+        {
+          "name": "Bánh Xèo Tôm",
+          "price": "45.000đ",
+          "description": "Bánh xèo giòn với tôm tươi và rau sống",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        },
+        {
+          "name": "Bánh Xèo Thịt",
+          "price": "40.000đ",
+          "description": "Bánh xèo với thịt heo và nấm",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        }
+      ]
+    },
+    {
+      "restaurant_name": "Le Beaulieu",
+      "city": "Hà Nội",
+      "district": "Hoàn Kiếm",
+      "cuisine": "Ẩm thực Pháp",
+      "rating": 4.7,
+      "price_range": "₫₫₫",
+      "source": "MICHELIN Guide",
+      "description": "An elegant French restaurant offering fine dining experience with authentic French cuisine and an extensive wine list.",
+      "address": "15 Tràng Tiền, Hoàn Kiếm, Hà Nội",
+      "opening_hours": "11:00 - 23:00",
+      "phone": "024 4567 8901",
+      "dishes": [
+        {
+          "name": "Foie Gras",
+          "price": "350.000đ",
+          "description": "Gan ngỗng béo ngậy với sốt trái cây",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        },
+        {
+          "name": "Bò Wellington",
+          "price": "450.000đ",
+          "description": "Thịt bò nướng bọc bánh ngàn lớp",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        }
+      ]
+    },
+    {
+      "restaurant_name": "Aira Sky Bar & Restaurant",
+      "city": "Hà Nội",
+      "district": "Hoàn Kiếm",
+      "cuisine": "Ẩm thực quốc tế",
+      "rating": 5.0,
+      "price_range": "₫₫",
+      "source": "TripAdvisor",
+      "description": "A rooftop restaurant offering panoramic views of Hanoi and a fusion of international and Vietnamese cuisine.",
+      "address": "25 Lý Thường Kiệt, Hoàn Kiếm, Hà Nội",
+      "opening_hours": "17:00 - 23:00",
+      "phone": "024 5678 9012",
+      "dishes": [
+        {
+          "name": "Cá Hồi Áp Chảo",
+          "price": "280.000đ",
+          "description": "Cá hồi áp chảo với sốt chanh dây",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        },
+        {
+          "name": "Bò Wagyu",
+          "price": "350.000đ",
+          "description": "Thịt bò Wagyu với sốt nấm truffle",
+          "image": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5"
+        }
+      ]
+    }
+  ]
+} 

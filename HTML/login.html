@@ -1,28 +1,29 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <title>Login - VietFood</title>
     <link rel="stylesheet" href="../CSS/login.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>Đăng nhập</h2>
-        <form id="loginForm">
-            <div class="input-group">
-                <label for="username">Tên đăng nhập</label>
-                <input type="text" id="username" placeholder="Nhập tên đăng nhập">
-                <span class="error-message" id="usernameError"></span>
+    <nav class="navbar">
+        <!-- ...navbar as above... -->
+    </nav>
+    <main>
+        <section class="auth-container">
+            <div class="auth-card">
+                <h2>Welcome Back</h2>
+                <p>Login to your account</p>
+                <form id="login-form">
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit">Login</button>
+                </form>
             </div>
-            <div class="input-group">
-                <label for="password">Mật khẩu</label>
-                <input type="password" id="password" placeholder="Nhập mật khẩu">
-                <span class="error-message" id="passwordError"></span>
-            </div>
-            <button type="submit">Đăng nhập</button>
-        </form>
-    </div>
+        </section>
+    </main>
+    <div id="toast" class="toast"></div>
     <script src="../JS/login.js"></script>
 </body>
 </html>

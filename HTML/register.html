@@ -3,33 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Page</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Register - VietFood</title>
+    <link rel="stylesheet" href="../CSS/main.css">
+    <link rel="stylesheet" href="../CSS/register.css">
 </head>
 <body>
-    <div class="login-container">
-        <h2>Create an Account</h2>
-        <form id="registerForm">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username">
-            <div class="error" id="usernameError"></div>
-
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email">
-            <div class="error" id="emailError"></div>
-
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password">
-            <div class="error" id="passwordError"></div>
-
-            <label for="verifyPassword">Verify Password</label>
-            <input type="password" id="verifyPassword" name="verifyPassword">
-            <div class="error" id="verifyPasswordError"></div>
-
-            <button type="submit">Register</button>
-        </form>
-        <p>Already have an account? <a href="index.html">Sign in here!</a></p>
-    </div>
-    <script src="register.js"></script>
+    <nav class="navbar">
+        <!-- ...navbar as above... -->
+    </nav>
+    <main>
+        <section class="auth-container">
+            <div class="auth-card">
+                <h2>Create Account</h2>
+                <p>Sign up to explore Vietnamese cuisine</p>
+                <form id="register-form">
+                    <input type="email" placeholder="Email" required>
+                    <input type="password" placeholder="Password" required>
+                    <button type="submit">Register</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <div id="toast" class="toast"></div>
+    <script src="../JS/register.js"></script>
 </body>
 </html>
