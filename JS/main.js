@@ -4,24 +4,24 @@ let currentUser = null;
 let users = JSON.parse(localStorage.getItem('users')) || {};
 const reviews = {
   "Phở Bò Phú Gia": [
-    { user: "Minh Nguyen", rating: 5, text: "Phở rất ngon, nước dùng đậm đà, phục vụ nhanh chóng!", date: "2024-06-01" },
-    { user: "Lan Tran", rating: 4, text: "Không gian sạch sẽ, giá hợp lý, sẽ quay lại!", date: "2024-06-02" }
+    { user: "Minh Nguyen", rating: 5, text: "Delicious pho, rich broth, quick service!", date: "2024-06-01" },
+    { user: "Lan Tran", rating: 4, text: "Clean space, reasonable price, will come back!", date: "2024-06-02" }
   ],
   "Bò Kho Gánh": [
-    { user: "Huy Hoang", rating: 5, text: "Bò kho mềm, thơm, ăn cùng bánh mì tuyệt vời!", date: "2024-06-01" },
-    { user: "Thu Le", rating: 4, text: "Món ăn ngon, phục vụ thân thiện.", date: "2024-06-03" }
+    { user: "Huy Hoang", rating: 5, text: "Tender beef stew, fragrant, great with bread!", date: "2024-06-01" },
+    { user: "Thu Le", rating: 4, text: "Tasty food, friendly service.", date: "2024-06-03" }
   ],
   "Bánh Xèo Tôm Nhảy Cô Ba": [
-    { user: "Quang Vu", rating: 5, text: "Bánh xèo giòn, tôm tươi, nước chấm đậm vị!", date: "2024-06-01" },
-    { user: "My Pham", rating: 4, text: "Không gian rộng rãi, món ăn chất lượng.", date: "2024-06-04" }
+    { user: "Quang Vu", rating: 5, text: "Crispy pancake, fresh shrimp, flavorful sauce!", date: "2024-06-01" },
+    { user: "My Pham", rating: 4, text: "Spacious place, quality food.", date: "2024-06-04" }
   ],
   "Le Beaulieu": [
-    { user: "Pierre D.", rating: 5, text: "Ẩm thực Pháp chuẩn vị, không gian sang trọng.", date: "2024-06-01" },
-    { user: "Mai Anh", rating: 4, text: "Phục vụ chuyên nghiệp, món ăn ngon.", date: "2024-06-05" }
+    { user: "Pierre D.", rating: 5, text: "Authentic French cuisine, elegant atmosphere.", date: "2024-06-01" },
+    { user: "Mai Anh", rating: 4, text: "Professional service, delicious dishes.", date: "2024-06-05" }
   ],
   "Aira Sky Bar & Restaurant": [
-    { user: "Long Bui", rating: 5, text: "View đẹp, món ăn đa dạng, cocktail tuyệt vời!", date: "2024-06-01" },
-    { user: "Trang Nguyen", rating: 4, text: "Không gian lãng mạn, giá hợp lý.", date: "2024-06-06" }
+    { user: "Long Bui", rating: 5, text: "Great view, diverse menu, amazing cocktails!", date: "2024-06-01" },
+    { user: "Trang Nguyen", rating: 4, text: "Romantic space, reasonable price.", date: "2024-06-06" }
   ]
 };
 

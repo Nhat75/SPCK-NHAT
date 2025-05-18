@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <!-- ======= THANH ĐIỀU HƯỚNG (NAVBAR) ======= -->
+  <!-- ======= NAVBAR ======= -->
   <nav class="navbar">
     <div class="container">
       <a href="#" class="logo" onclick="showSection('home')">
@@ -29,13 +29,13 @@
     </div>
   </nav>
 
-  <!-- ======= PHẦN CHÍNH (MAIN) ======= -->
+  <!-- ======= MAIN ======= -->
   <main>
-    <!-- ======= TRANG CHỦ (HERO + MÓN ĂN NỔI BẬT) ======= -->
+    <!-- ======= HOME (HERO + POPULAR DISHES) ======= -->
     <section id="home-section" class="section active">
       <div class="hero">
-        <h1>Khám phá <span>ẩm thực Việt Nam</span> tuyệt vời nhất</h1>
-        <p>Khám phá ẩm thực Việt Nam chính gốc từ những nhà hàng nổi tiếng trên khắp cả nước</p>
+        <h1>Discover the best <span>Vietnamese food</span> experiences</h1>
+        <p>Explore authentic Vietnamese cuisine from the most famous restaurants across the country</p>
         <div class="hero-stats">
           <div class="stat-item">
             <i class="fas fa-store"></i>
@@ -60,7 +60,7 @@
       </div>
     </section>
 
-    <!-- ======= ĐĂNG NHẬP ======= -->
+    <!-- ======= LOGIN ======= -->
     <section id="login-section" class="section">
       <div class="auth-container">
         <div class="auth-card">
@@ -86,7 +86,7 @@
       </div>
     </section>
 
-    <!-- ======= ĐĂNG KÝ ======= -->
+    <!-- ======= REGISTER ======= -->
     <section id="register-section" class="section">
       <div class="auth-container">
         <div class="auth-card">
@@ -116,7 +116,7 @@
       </div>
     </section>
 
-    <!-- ======= DANH SÁCH NHÀ HÀNG ======= -->
+    <!-- ======= RESTAURANT LIST ======= -->
     <section id="food-shops-section" class="section">
       <div class="container">
         <h2>Popular Restaurants</h2>
@@ -135,7 +135,7 @@
           </select>
         </div>
         <div id="shop-login-message" style="display:none; color: red; text-align: center; margin: 2em 0;">
-          You need to <a href="#" onclick="showSection('login-section')">log in</a> or <a href="#" onclick="showSection('register-section')">register</a> to use the shop feature.
+          You need to <a href="#" onclick="showSection('login-section')">log in</a> or <a href="#" onclick="showSection('register-section')">register</a> to use the restaurant feature.
         </div>
         <div class="shop-grid" id="shop-grid">
           <!-- Shops will be populated by JavaScript -->
@@ -143,7 +143,7 @@
       </div>
     </section>
 
-    <!-- ======= CHI TIẾT NHÀ HÀNG ======= -->
+    <!-- ======= RESTAURANT DETAIL ======= -->
     <section id="shop-detail-section" class="section">
       <div class="container">
         <button class="back-btn" onclick="showSection('food-shops-section')">
@@ -163,7 +163,7 @@
             </div>
           </div>
           <div class="shop-dishes">
-            <h3>Món ăn nổi bật</h3>
+            <h3>Featured Dishes</h3>
             <div id="shop-dishes-list" class="dishes-grid">
               <!-- Dishes will be populated by JavaScript -->
             </div>
@@ -196,7 +196,7 @@
     </section>
   </main>
 
-  <!-- ======= MODAL ĐẶT BÀN (ẨN MẶC ĐỊNH) ======= -->
+  <!-- ======= BOOKING MODAL (HIDDEN BY DEFAULT) ======= -->
   <div id="main-booking-modal" class="modal" style="display:none;" aria-modal="true" role="dialog" aria-labelledby="booking-modal-title" tabindex="-1">
     <div class="modal-overlay" id="main-booking-overlay"></div>
     <div class="modal-content">
