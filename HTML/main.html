@@ -34,8 +34,8 @@
     <!-- ======= TRANG CHỦ (HERO + MÓN ĂN NỔI BẬT) ======= -->
     <section id="home-section" class="section active">
       <div class="hero">
-        <h1>Discover the Best <span>Vietnamese Food</span></h1>
-        <p>Explore authentic Vietnamese cuisine from the finest local food shops across Vietnam</p>
+        <h1>Khám phá <span>ẩm thực Việt Nam</span> tuyệt vời nhất</h1>
+        <p>Khám phá ẩm thực Việt Nam chính gốc từ những nhà hàng nổi tiếng trên khắp cả nước</p>
         <div class="hero-stats">
           <div class="stat-item">
             <i class="fas fa-store"></i>
@@ -43,9 +43,9 @@
             <p>Restaurants</p>
           </div>
           <div class="stat-item">
-            <i class="fas fa-star"></i>
-            <span id="avg-rating">0</span>
-            <p>Average Rating</p>
+            <i class="fas fa-phone"></i>
+            <span id="hero-phone">0</span>
+            <p>Phone Number</p>
           </div>
           <div class="stat-item">
             <i class="fas fa-map-marker-alt"></i>
@@ -196,14 +196,6 @@
     </section>
   </main>
 
-  <!-- ======= LỊCH SỬ ĐẶT BÀN ======= -->
-  <section id="booking-history-section" class="section" style="display:none;">
-    <div class="container">
-      <h2>Your Booking History</h2>
-      <div id="booking-history-list"></div>
-    </div>
-  </section>
-
   <!-- ======= MODAL ĐẶT BÀN (ẨN MẶC ĐỊNH) ======= -->
   <div id="main-booking-modal" class="modal" style="display:none;" aria-modal="true" role="dialog" aria-labelledby="booking-modal-title" tabindex="-1">
     <div class="modal-overlay" id="main-booking-overlay"></div>
@@ -221,15 +213,8 @@
           <input type="number" id="main-booking-seats" name="seats" min="1" max="20" required>
         </div>
         <div class="form-group">
-          <label for="main-booking-rating"><i class="fas fa-star"></i> Your Rating:</label>
-          <select id="main-booking-rating" name="rating" required>
-            <option value="">Select</option>
-            <option value="1">1 Star</option>
-            <option value="2">2 Stars</option>
-            <option value="3">3 Stars</option>
-            <option value="4">4 Stars</option>
-            <option value="5">5 Stars</option>
-          </select>
+          <label for="main-booking-phone"><i class="fas fa-phone"></i> Your Phone Number:</label>
+          <input type="tel" id="main-booking-phone" name="phone" required pattern="[0-9+\-() ]{8,}" placeholder="e.g. 0901234567">
         </div>
         <div class="form-group">
           <label for="main-booking-details"><i class="fas fa-comment"></i> Booking Details:</label>

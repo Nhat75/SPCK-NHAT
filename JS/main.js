@@ -67,11 +67,16 @@ async function loadFoodStores() {
 // Update hero section statistics
 function updateHeroStats() {
   const totalShops = foodStores.length;
-  const avgRating = (foodStores.reduce((sum, shop) => sum + parseFloat(shop.rating), 0) / totalShops).toFixed(1);
+  // Find the best-rated restaurant
+  let phone = '';
+  if (foodStores.length > 0) {
+    const best = [...foodStores].sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating))[0];
+    phone = best.phone || '';
+  }
   const totalCities = new Set(foodStores.map(shop => shop.city)).size;
 
   document.getElementById('total-shops').textContent = totalShops;
-  document.getElementById('avg-rating').textContent = avgRating;
+  document.getElementById('hero-phone').textContent = phone;
   document.getElementById('total-cities').textContent = totalCities;
 }
 
@@ -543,14 +548,18 @@ function displayBookingHistory() {
     bookingHistoryList.innerHTML = '<p>No bookings found.</p>';
     return;
   }
-  bookingHistoryList.innerHTML = userBookings.map(b => `
-    <div class="booking-item" style="background:#f8f9fa;padding:12px;border-radius:6px;margin-bottom:10px;">
-      <b>Restaurant:</b> ${b.restaurant}<br>
-      <b>Date:</b> ${b.date} | <b>Seats:</b> ${b.seats}<br>
-      <b>Rating:</b> ${'★'.repeat(b.rating)}<br>
-      <b>Details:</b> ${b.details}
-    </div>
-  `).join('');
+  bookingHistoryList.innerHTML = userBookings.map(b => {
+    // Find the restaurant's phone number
+    const shop = foodStores.find(s => s.restaurant_name === b.restaurant);
+    const phone = shop && shop.phone ? shop.phone : 'N/A';
+    return `
+      <div class="booking-item" style="background:#f8f9fa;padding:12px;border-radius:6px;margin-bottom:10px;">
+        <b>Restaurant:</b> ${b.restaurant}<br>
+        <b>Phone Number:</b> ${phone}<br>
+        <b>Details:</b> ${b.details}
+      </div>
+    `;
+  }).join('');
 }
 
 // Modal helpers
@@ -593,6 +602,8 @@ if (mainBookingForm) {
     const feedback = document.getElementById('booking-feedback');
     loading.style.display = 'block';
     feedback.style.display = 'none';
+    // Get phone number
+    const phone = document.getElementById('main-booking-phone').value;
     // Simulate async booking
     setTimeout(() => {
       loading.style.display = 'none';
@@ -601,6 +612,11 @@ if (mainBookingForm) {
       feedback.textContent = 'Booking successful!';
       mainBookingForm.reset();
       setTimeout(closeMainBookingModal, 1200);
+      // Save booking with phone number (if you store bookings)
+      // Example:
+      // const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+      // bookings.push({ user: currentUser, phone });
+      // localStorage.setItem('bookings', JSON.stringify(bookings));
     }, 900);
   };
 }
