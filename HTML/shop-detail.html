@@ -55,6 +55,35 @@
           <h3>Reviews</h3>
           <div id="reviews-list"></div>
         </div>
+        <button id="booking-btn" class="booking-btn">Booking</button>
+        <div id="booking-modal" class="modal" style="display:none;">
+          <div class="modal-content">
+            <span class="close" id="close-booking-modal">&times;</span>
+            <h3>Book a Table</h3>
+            <form id="booking-form">
+              <label for="booking-date">Date:</label>
+              <input type="date" id="booking-date" name="booking-date" required>
+              <label for="booking-seats">Number of Seats:</label>
+              <input type="number" id="booking-seats" name="booking-seats" min="1" max="20" required>
+              <label for="booking-rating">Your Rating:</label>
+              <select id="booking-rating" name="booking-rating" required>
+                <option value="">Select</option>
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
+              </select>
+              <label for="booking-review">Your Review:</label>
+              <textarea id="booking-review" name="booking-review" rows="3" required></textarea>
+              <button type="submit" class="submit-booking-btn">Submit Booking & Review</button>
+            </form>
+          </div>
+        </div>
+        <div id="user-bookings-list-section" style="margin-top:2em;">
+          <h3>Your Bookings</h3>
+          <div id="user-bookings-list"></div>
+        </div>
       </div>
     </div>
   </main>
@@ -70,5 +99,6 @@
   </footer>
   <div id="toast" class="toast"></div>
   <script src="../JS/shop-detail.js"></script>
+  <script src="../JS/script.js"></script>
 </body>
 </html> 

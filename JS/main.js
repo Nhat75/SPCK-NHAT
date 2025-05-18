@@ -1,6 +1,7 @@
 // Global variables
 let foodStores = [];
 let currentUser = null;
+let users = JSON.parse(localStorage.getItem('users')) || {};
 const reviews = {
   "Phở Bò Phú Gia": [
     { user: "Minh Nguyen", rating: 5, text: "Phở rất ngon, nước dùng đậm đà, phục vụ nhanh chóng!", date: "2024-06-01" },
@@ -52,9 +53,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Load food stores from JSON file
 async function loadFoodStores() {
   try {
-    const response = await fetch('JS/food_stores.json');
+    const response = await fetch('../JS/food_stores.json');
     const data = await response.json();
-    foodStores = data.foodStores || data;
+    foodStores = data.foodStores || [];
+    console.log('Loaded food stores:', foodStores); // Debug log
   } catch (error) {
     console.error('Error loading food stores:', error);
     showToast('Error loading food stores data', 'error');
@@ -119,29 +121,44 @@ function populateFilters() {
 // Display food shops in the grid
 function displayFoodShops(filteredShops = foodStores) {
   const shopGrid = document.getElementById('shop-grid');
-  if (!shopGrid) return;
-
+  const shopLoginMessage = document.getElementById('shop-login-message');
+  if (!shopGrid || !shopLoginMessage) return;
+  if (!currentUser) {
+    shopLoginMessage.style.display = 'block';
+    shopGrid.style.display = 'none';
+    return;
+  } else {
+    shopLoginMessage.style.display = 'none';
+    shopGrid.style.display = 'grid';
+  }
   shopGrid.innerHTML = '';
+  if (filteredShops.length === 0) {
+    shopGrid.innerHTML = '<p class="no-shops">No restaurants found matching your criteria.</p>';
+    return;
+  }
   filteredShops.forEach(shop => {
     const shopCard = document.createElement('div');
     shopCard.className = 'shop-card';
     shopCard.innerHTML = `
       <div class="shop-image">
-        <img src="${shop.image || 'https://via.placeholder.com/400x200?text=No+Image'}" alt="${shop.restaurant_name}">
+        <img src="https://via.placeholder.com/400x200?text=Store+Image" alt="${shop.restaurant_name}">
       </div>
-      <h3>${shop.restaurant_name}</h3>
-      <div class="shop-info">
-        <p><i class="fas fa-map-marker-alt"></i> ${shop.district}, ${shop.city}</p>
-        <p><i class="fas fa-utensils"></i> ${shop.cuisine}</p>
-        <p><i class="fas fa-dollar-sign"></i> ${shop.price_range}</p>
-        <div class="rating">
-          <span>${shop.rating}</span>
-          <i class="fas fa-star"></i>
+      <div class="shop-content">
+        <h3>${shop.restaurant_name} <span class="store-label"><i class="fas fa-store"></i> Store</span></h3>
+        <div class="shop-info">
+          <p><i class="fas fa-map-marker-alt"></i> ${shop.district}, ${shop.city}</p>
+          <p><i class="fas fa-utensils"></i> ${shop.cuisine}</p>
+          <p><i class="fas fa-dollar-sign"></i> ${shop.price_range}</p>
+          <div class="rating">
+            <span>${shop.rating}</span>
+            <i class="fas fa-star"></i>
+          </div>
         </div>
+        <p class="shop-description">${shop.description}</p>
+        <button onclick="showShopDetail('${shop.restaurant_name}')" class="view-details-btn">
+          View Details
+        </button>
       </div>
-      <a href="shop-detail.html?name=${encodeURIComponent(shop.restaurant_name)}" class="view-details-btn">
-        View Details
-      </a>
     `;
     shopGrid.appendChild(shopCard);
   });
@@ -158,73 +175,56 @@ function filterShops() {
     (!cuisine || shop.cuisine === cuisine) &&
     (!price || shop.price_range === price)
   );
+
   displayFoodShops(filteredShops);
 }
 
 // Display popular dishes in the hero section
 function displayPopularDishes() {
-  const popularDishes = document.getElementById('popular-dishes');
-  if (!popularDishes) return;
-
-  const allDishes = foodStores.flatMap(shop => 
-    (shop.dishes || []).map(dish => ({
-      ...dish,
-      restaurant: shop.restaurant_name
-    }))
-  );
-
-  const randomDishes = allDishes
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 3);
-
-  popularDishes.innerHTML = '';
-  randomDishes.forEach(dish => {
-    const dishCard = document.createElement('div');
-    dishCard.className = 'dish-card';
-    dishCard.innerHTML = `
-      <img src="${dish.image}" alt="${dish.name}">
-      <div class="dish-info">
-        <h3>${dish.name}</h3>
-        <p>${dish.description}</p>
-        <span class="price">${dish.price}</span>
-        <p class="restaurant">From: ${dish.restaurant}</p>
-      </div>
-    `;
-    popularDishes.appendChild(dishCard);
+  const dishesGrid = document.getElementById('dishes-grid');
+  if (!dishesGrid) return;
+  dishesGrid.innerHTML = '';
+  foodStores.forEach(shop => {
+    if (shop.dishes && shop.dishes.length > 0) {
+      const bestDish = shop.dishes[0];
+      const dishCard = document.createElement('div');
+      dishCard.className = 'dish-card';
+      dishCard.innerHTML = `
+        <img src="${bestDish.image}" alt="${bestDish.name}">
+        <div class="dish-info">
+          <h3>${bestDish.name}</h3>
+          <p>${bestDish.description}</p>
+          <span class="price">${bestDish.price}</span>
+          <p class="restaurant">From: ${shop.restaurant_name}</p>
+        </div>
+      `;
+      dishesGrid.appendChild(dishCard);
+    }
   });
 }
 
-// Show shop details page
-function showShopDetail() {
-  const shopName = decodeURIComponent(new URLSearchParams(window.location.search).get('name') || '');
+// Show shop details
+function showShopDetail(shopName) {
+  if (!currentUser) {
+    document.getElementById('shop-login-message').style.display = 'block';
+    document.getElementById('shop-detail-content').style.display = 'none';
+    showToast('Please login to view restaurant details', 'error');
+    showSection('login-section');
+    return;
+  } else {
+    document.getElementById('shop-login-message').style.display = 'none';
+    document.getElementById('shop-detail-content').style.display = 'block';
+  }
   const shop = foodStores.find(s => s.restaurant_name === shopName);
-  
-  const shopDetailContent = document.getElementById('shop-detail-content');
-  if (!shopDetailContent || !shop) {
-    if (shopDetailContent) {
-      shopDetailContent.innerHTML = '<p>Shop not found.</p>';
-    }
+  if (!shop) {
+    showToast('Restaurant not found', 'error');
     return;
   }
-
-  // Display shop cover image
-  shopDetailContent.insertAdjacentHTML('afterbegin', `
-    <div class="shop-cover-image" style="margin-bottom: 2rem; text-align:center;">
-      <img src="${shop.image || 'https://via.placeholder.com/600x300?text=No+Image'}" alt="${shop.restaurant_name}" style="max-width: 100%; max-height: 320px; border-radius: 12px; object-fit:cover;">
-    </div>
-  `);
-
-  // Update shop details
   document.getElementById('detail-name').textContent = shop.restaurant_name;
   document.getElementById('detail-location').textContent = `${shop.district}, ${shop.city}`;
   document.getElementById('detail-cuisine').textContent = shop.cuisine;
   document.getElementById('detail-price').textContent = shop.price_range;
   document.getElementById('detail-rating').textContent = shop.rating;
-  document.getElementById('detail-description').textContent = shop.description;
-  document.getElementById('detail-address').textContent = shop.address;
-  document.getElementById('detail-hours').textContent = shop.opening_hours;
-  document.getElementById('detail-phone').textContent = shop.phone;
-
   // Display menu
   const dishesList = document.getElementById('shop-dishes-list');
   if (dishesList) {
@@ -247,9 +247,11 @@ function showShopDetail() {
       dishesList.innerHTML = '<p>No menu available.</p>';
     }
   }
-
-  // Display reviews
-  displayReviews(shop.restaurant_name);
+  // Show booking and review form only if logged in
+  const reviewForm = document.getElementById('review-form');
+  if (reviewForm) reviewForm.style.display = currentUser ? 'block' : 'none';
+  // Show the shop detail section
+  showSection('shop-detail-section');
 }
 
 // Display reviews for a shop
@@ -335,76 +337,185 @@ function showToast(message, type = 'info') {
   setTimeout(() => toast.remove(), 3000);
 }
 
-// Handle login
+// Email validation function
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// Login function
 function login(event) {
   event.preventDefault();
-  const username = document.getElementById('login-username').value;
+  
+  const email = document.getElementById('login-email').value;
   const password = document.getElementById('login-password').value;
-
-  if (!username || !password) {
-    showToast('Please fill in all fields', 'error');
+  const emailError = document.getElementById('login-email-error');
+  const passwordError = document.getElementById('login-password-error');
+  
+  // Reset errors
+  emailError.textContent = '';
+  passwordError.textContent = '';
+  
+  // Validate email
+  if (!isValidEmail(email)) {
+    emailError.textContent = 'Please enter a valid email address';
     return;
   }
-
-  // Simple validation for demo
-  if (username === 'demo' && password === 'password') {
-    currentUser = username;
+  
+  // Get users from localStorage
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  
+  // Find user
+  const user = users.find(u => u.email === email && u.password === password);
+  
+  if (user) {
+    // Store current user
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    
+    // Update UI
     updateAuthUI();
+    
+    // Show success message
+    showToast('Login successful!');
+    
+    // Redirect to home
     showSection('home-section');
-    showToast('Login successful', 'success');
   } else {
-    showToast('Invalid credentials', 'error');
+    passwordError.textContent = 'Invalid email or password';
   }
 }
 
 // Handle logout
 function logout() {
   currentUser = null;
+  localStorage.removeItem('currentUser');
   updateAuthUI();
   showSection('home-section');
   showToast('Logged out successfully', 'success');
 }
 
-// Handle registration
+// Register function
 function register(event) {
   event.preventDefault();
+  
   const username = document.getElementById('register-username').value;
+  const email = document.getElementById('register-email').value;
   const password = document.getElementById('register-password').value;
   const confirmPassword = document.getElementById('register-confirm-password').value;
-
-  if (!username || !password || !confirmPassword) {
-    showToast('Please fill in all fields', 'error');
+  
+  const usernameError = document.getElementById('register-username-error');
+  const emailError = document.getElementById('register-email-error');
+  const passwordError = document.getElementById('register-password-error');
+  const confirmPasswordError = document.getElementById('register-confirm-password-error');
+  
+  // Reset errors
+  usernameError.textContent = '';
+  emailError.textContent = '';
+  passwordError.textContent = '';
+  confirmPasswordError.textContent = '';
+  
+  // Validate username
+  if (username.length < 3) {
+    usernameError.textContent = 'Username must be at least 3 characters long';
     return;
   }
-
+  
+  // Validate email
+  if (!isValidEmail(email)) {
+    emailError.textContent = 'Please enter a valid email address';
+    return;
+  }
+  
+  // Validate password
+  if (password.length < 6) {
+    passwordError.textContent = 'Password must be at least 6 characters long';
+    return;
+  }
+  
+  // Validate confirm password
   if (password !== confirmPassword) {
-    showToast('Passwords do not match', 'error');
+    confirmPasswordError.textContent = 'Passwords do not match';
     return;
   }
-
-  // Simple registration for demo
-  currentUser = username;
+  
+  // Get existing users
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  
+  // Check if email already exists
+  if (users.some(user => user.email === email)) {
+    emailError.textContent = 'Email already registered';
+    return;
+  }
+  
+  // Create new user
+  const newUser = {
+    username,
+    email,
+    password,
+    reviews: []
+  };
+  
+  // Add to users array
+  users.push(newUser);
+  
+  // Save to localStorage
+  localStorage.setItem('users', JSON.stringify(users));
+  
+  // Store current user
+  localStorage.setItem('currentUser', JSON.stringify(newUser));
+  
+  // Update UI
   updateAuthUI();
+  
+  // Show success message
+  showToast('Registration successful!');
+  
+  // Redirect to home
   showSection('home-section');
-  showToast('Registration successful', 'success');
+}
+
+// Show error message
+function showError(elementId, message) {
+  const errorElement = document.getElementById(elementId);
+  if (errorElement) {
+    errorElement.textContent = message;
+  }
+}
+
+// Clear all error messages
+function clearErrors(formType) {
+  const errorElements = document.querySelectorAll(`#${formType}-form .error`);
+  errorElements.forEach(element => {
+    element.textContent = '';
+  });
 }
 
 // Update authentication UI elements
 function updateAuthUI() {
   const authButtons = document.getElementById('auth-buttons');
   const userInfo = document.getElementById('user-info');
+  const userEmail = document.getElementById('user-email');
   
-  if (authButtons && userInfo) {
-    if (currentUser) {
-      authButtons.style.display = 'none';
-      userInfo.style.display = 'flex';
-      document.getElementById('username-display').textContent = currentUser;
-    } else {
-      authButtons.style.display = 'flex';
-      userInfo.style.display = 'none';
-    }
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  
+  if (currentUser) {
+    authButtons.style.display = 'none';
+    userInfo.style.display = 'flex';
+    userEmail.textContent = currentUser.email;
+  } else {
+    authButtons.style.display = 'flex';
+    userInfo.style.display = 'none';
   }
 }
+
+// Check for existing user session on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const savedUser = localStorage.getItem('currentUser');
+  if (savedUser) {
+    currentUser = savedUser;
+    updateAuthUI();
+  }
+});
 
 // Handle booking
 function handleBooking(event) {
