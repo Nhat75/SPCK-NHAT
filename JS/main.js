@@ -25,6 +25,7 @@ const reviews = {
   ]
 };
 
+// ======= KHỞI TẠO ỨNG DỤNG (INIT APP) =======
 // Initialize the application
 document.addEventListener('DOMContentLoaded', async () => {
   await loadFoodStores();
@@ -139,14 +140,15 @@ function displayFoodShops(filteredShops = foodStores) {
   filteredShops.forEach(shop => {
     const shopCard = document.createElement('div');
     shopCard.className = 'shop-card';
+    const imageUrl = shop.image && shop.image.trim() !== '' ? shop.image : 'https://via.placeholder.com/400x200?text=Store+Image';
     shopCard.innerHTML = `
       <div class="shop-image">
-        <img src="https://via.placeholder.com/400x200?text=Store+Image" alt="${shop.restaurant_name}">
+        <img src="${imageUrl}" alt="${shop.restaurant_name}">
       </div>
       <div class="shop-content">
-        <h3>${shop.restaurant_name} <span class="store-label"><i class="fas fa-store"></i> Store</span></h3>
+        <h3>${shop.restaurant_name}</h3>
         <div class="shop-info">
-          <p><i class="fas fa-map-marker-alt"></i> ${shop.district}, ${shop.city}</p>
+          <p><i class="fas fa-map-marker-alt"></i> ${shop.address ? shop.address + ', ' : ''}${shop.district}, ${shop.city}</p>
           <p><i class="fas fa-utensils"></i> ${shop.cuisine}</p>
           <p><i class="fas fa-dollar-sign"></i> ${shop.price_range}</p>
           <div class="rating">
@@ -158,6 +160,7 @@ function displayFoodShops(filteredShops = foodStores) {
         <button onclick="showShopDetail('${shop.restaurant_name}')" class="view-details-btn">
           View Details
         </button>
+        <button class="booking-btn" onclick="openMainBookingModal('${shop.restaurant_name}')">Book Now</button>
       </div>
     `;
     shopGrid.appendChild(shopCard);
@@ -177,30 +180,6 @@ function filterShops() {
   );
 
   displayFoodShops(filteredShops);
-}
-
-// Display popular dishes in the hero section
-function displayPopularDishes() {
-  const dishesGrid = document.getElementById('dishes-grid');
-  if (!dishesGrid) return;
-  dishesGrid.innerHTML = '';
-  foodStores.forEach(shop => {
-    if (shop.dishes && shop.dishes.length > 0) {
-      const bestDish = shop.dishes[0];
-      const dishCard = document.createElement('div');
-      dishCard.className = 'dish-card';
-      dishCard.innerHTML = `
-        <img src="${bestDish.image}" alt="${bestDish.name}">
-        <div class="dish-info">
-          <h3>${bestDish.name}</h3>
-          <p>${bestDish.description}</p>
-          <span class="price">${bestDish.price}</span>
-          <p class="restaurant">From: ${shop.restaurant_name}</p>
-        </div>
-      `;
-      dishesGrid.appendChild(dishCard);
-    }
-  });
 }
 
 // Show shop details
@@ -319,13 +298,18 @@ function submitReview(event) {
 
 // Show/hide sections
 function showSection(sectionId) {
-  const sections = ['home-section', 'login-section', 'register-section', 'food-shops-section', 'shop-detail-section'];
+  const sections = ['home-section', 'login-section', 'register-section', 'food-shops-section', 'shop-detail-section', 'booking-history-section'];
   sections.forEach(section => {
     const element = document.getElementById(section);
     if (element) {
       element.style.display = section === sectionId ? 'block' : 'none';
     }
   });
+  if (sectionId === 'booking-history-section') {
+    displayBookingHistory();
+  } else {
+    document.getElementById('booking-history-section').style.display = 'none';
+  }
 }
 
 // Show toast notifications
@@ -506,6 +490,12 @@ function updateAuthUI() {
     authButtons.style.display = 'flex';
     userInfo.style.display = 'none';
   }
+  const bookingHistoryLink = document.getElementById('booking-history-link');
+  if (currentUser && bookingHistoryLink) {
+    bookingHistoryLink.style.display = 'inline';
+  } else if (bookingHistoryLink) {
+    bookingHistoryLink.style.display = 'none';
+  }
 }
 
 // Check for existing user session on page load
@@ -536,4 +526,117 @@ function handleBooking(event) {
 
   showToast('Booking submitted successfully', 'success');
   document.getElementById('booking-form').reset();
+}
+
+// Add function to display booking history
+function displayBookingHistory() {
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const bookingHistoryList = document.getElementById('booking-history-list');
+  if (!bookingHistoryList) return;
+  if (!currentUser) {
+    bookingHistoryList.innerHTML = '<p>You must be logged in to view your booking history.</p>';
+    return;
+  }
+  const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+  const userBookings = bookings.filter(b => b.user === currentUser.username || b.user === currentUser.email);
+  if (userBookings.length === 0) {
+    bookingHistoryList.innerHTML = '<p>No bookings found.</p>';
+    return;
+  }
+  bookingHistoryList.innerHTML = userBookings.map(b => `
+    <div class="booking-item" style="background:#f8f9fa;padding:12px;border-radius:6px;margin-bottom:10px;">
+      <b>Restaurant:</b> ${b.restaurant}<br>
+      <b>Date:</b> ${b.date} | <b>Seats:</b> ${b.seats}<br>
+      <b>Rating:</b> ${'★'.repeat(b.rating)}<br>
+      <b>Details:</b> ${b.details}
+    </div>
+  `).join('');
+}
+
+// Modal helpers
+function openMainBookingModal(restaurantName) {
+  const modal = document.getElementById('main-booking-modal');
+  const overlay = document.getElementById('main-booking-overlay');
+  const form = document.getElementById('main-booking-form');
+  const feedback = document.getElementById('booking-feedback');
+  const loading = document.getElementById('booking-loading');
+  document.getElementById('main-booking-restaurant').value = restaurantName;
+  modal.classList.add('active');
+  modal.style.display = 'flex';
+  feedback.style.display = 'none';
+  loading.style.display = 'none';
+  setTimeout(() => {
+    document.getElementById('main-booking-date').focus();
+  }, 100);
+  // Close on overlay click
+  overlay.onclick = function(e) {
+    if (e.target === overlay) closeMainBookingModal();
+  };
+  // Close on Esc
+  document.onkeydown = function(e) {
+    if (e.key === 'Escape') closeMainBookingModal();
+  };
+}
+function closeMainBookingModal() {
+  const modal = document.getElementById('main-booking-modal');
+  modal.classList.remove('active');
+  modal.style.display = 'none';
+  document.onkeydown = null;
+}
+document.getElementById('close-main-booking-modal').onclick = closeMainBookingModal;
+// Booking form submit
+const mainBookingForm = document.getElementById('main-booking-form');
+if (mainBookingForm) {
+  mainBookingForm.onsubmit = async function(e) {
+    e.preventDefault();
+    const loading = document.getElementById('booking-loading');
+    const feedback = document.getElementById('booking-feedback');
+    loading.style.display = 'block';
+    feedback.style.display = 'none';
+    // Simulate async booking
+    setTimeout(() => {
+      loading.style.display = 'none';
+      feedback.style.display = 'block';
+      feedback.style.color = '#27ae60';
+      feedback.textContent = 'Booking successful!';
+      mainBookingForm.reset();
+      setTimeout(closeMainBookingModal, 1200);
+    }, 900);
+  };
+}
+
+// Display popular dishes
+function displayPopularDishes() {
+  const topDishes = foodStores.slice(0, 5); // Assuming the first 5 shops are the most popular
+  const dishesGrid = document.getElementById('popular-dishes');
+  if (!dishesGrid) return;
+  dishesGrid.innerHTML = '';
+  if (topDishes.length === 0) {
+    dishesGrid.innerHTML = '<p>No popular dishes found.</p>';
+    return;
+  }
+  topDishes.forEach(dish => {
+    const dishCard = document.createElement('div');
+    dishCard.className = 'dish-card';
+    dishCard.innerHTML = `
+      <span class="dish-badge">Món ăn nổi bật</span>
+      <div class="dish-image">
+        <img src="${dish.image}" alt="${dish.name}">
+        <div class="dish-overlay">
+          <span class="restaurant-name">${dish.restaurant}</span>
+        </div>
+      </div>
+      <div class="dish-info">
+        <h3>${dish.name}</h3>
+        <p>${dish.description}</p>
+        <div class="dish-meta">
+          <span class="price">${dish.price}</span>
+          <a href="#" class="view-restaurant-btn" onclick="showShopDetail('${dish.restaurant}')">
+            <i class="fas fa-utensils"></i> View Restaurant
+          </a>
+        </div>
+      </div>
+    `;
+    dishesGrid.appendChild(dishCard);
+  });
 } 
